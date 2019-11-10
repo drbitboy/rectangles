@@ -1,9 +1,25 @@
+/* Given a subset of integral {X,Y} coordinates on a Cartesian grid,
+   count rectangles composed of groups of four points at rectangle
+   vertices using points from that subset.
+
+   Algorithm:  calculate potential diagonals' parameters, midpoint and
+               length*, from all possible sets of {{X1,Y1},{X2,Y2}}
+               pairs of points in the subset.  If there are M potential
+               diagonals with the same parameters, then there are
+               M(M-1)/2 rectangles that may be created from those
+               M diagonals.
+
+   * Use sum of diagonal endpoints {X1+X2,Y1+Y2} as a proxy for
+     the midpoint {(X1+X2)/2,(Y1+Y2)/2}; use square of length of
+     diagonal via Pythagorean Theorem ((X1-X2)**2 + (Y1-Y2)**2) as a
+     proxy for the length (SQRT((X1-X2)**2 + (Y1-Y2)**2)).
+
+ */
 #include <bits/stdc++.h>
 #include <set>
 #include <math.h>
 #include <sys/time.h>
 #include <random>
-#include <unistd.h>
 using namespace std;
 
 #define __Rn_USE_DEFAULT__
@@ -125,6 +141,7 @@ int main(int argc, char** argv) {
           dy = y > yo ? (y - yo) : (yo - y);
           pair<USTDiagIT,bool> ib = ust_diag.insert(Diag(x+xo,y+yo,(dx*dx)+(dy*dy)));
           if (!ib.second) ++count;
+          // Need to fix this to increase by M-1 for Mth matching diagonal
         } // for (pxyo=pxy; pxy<pxysend; )
       } // for (pxy=xys; pxy<pxysend; )
 
