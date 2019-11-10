@@ -7,7 +7,7 @@ https://www.youtube.com/watch?v=EuPSibuIKIg
 
 ### Makefile
 Controls building and running
-- make all (or [make] alone:  build r3 and r0 executables (r3.exe and r0.exe on Cygwin)
+- make [all] (default):  build r3 and r0 executables (r3.exe and r0.exe on Cygwin)
 - make go:  run r3 and r0 executables; write outputs to log_r3.txt and log_r0.txt respectively.
 - make clean:  remove executables and log files
 
