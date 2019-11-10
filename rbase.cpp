@@ -6,11 +6,49 @@
 #include <unistd.h>
 using namespace std;
 
-size_t Diag(unsigned int x, unsigned int y, unsigned int L) {
-  return ((size_t)x) | (((size_t)y)<<16) | (((size_t)L)<<32);
-}
+#define __Rn_USE_DEFAULT__
 
-typedef unordered_set<size_t> USTDiag;
+////////////////////////////////////////////////////////////////////////
+#   ifdef __r3__
+    size_t Diag(unsigned int x, unsigned int y, unsigned int L) {
+      return ((size_t)x) | (((size_t)y)<<16) | (((size_t)L)<<32);
+    }
+
+    typedef unordered_set<size_t> USTDiag;
+#   undef __Rn_USE_DEFAULT__
+#   endif
+////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////
+#   ifdef __Rn_USE_DEFAULT__
+    class Diag {
+    public:
+      unsigned int midx; unsigned int midy; unsigned int lensq;
+      Diag() : midx(-1), midy(-1), lensq(-1) {}
+      Diag(unsigned int _x, unsigned int _y, unsigned int _lsq) : midx(_x), midy(_y), lensq(_lsq) {}
+    };
+    struct DiagHash {
+    public:
+      size_t operator()(const Diag& diag) const {
+      hash<size_t> hash_fn;
+        return hash_fn(((size_t)diag.midx) | (((size_t)diag.midy) << 16) | (((size_t)diag.lensq) << 32));
+        //return diag.midx ^ diag.midy ^ diag.lensq
+            //     ^ (diag.midx+diag.midy-diag.lensq);
+      }
+    };
+    struct DiagEq {
+    public:
+      size_t operator()(const Diag& diag1, const Diag& diag2) const {
+#   define F(M) if (diag1.M!=diag2.M) return false
+        F(midx); F(midy); F(lensq); return true;
+      }
+    };
+    typedef unordered_set<Diag, DiagHash, DiagEq> USTDiag;
+#   endif
+////////////////////////////////////////////////////////////////////////
+
+
 typedef USTDiag::iterator USTDiagIT;
 
 typedef unordered_set<unsigned int> USTuint;
@@ -23,7 +61,8 @@ int main(int argc, char** argv) {
   unsigned long usecstart;
   default_random_engine generator((unsigned) USEC);
 
-  double dNmax = (1<<14)/1.4;
+  //double dNmax = (1<<14);
+  double dNmax = 11999;
 
   for (unsigned int N = 14; N < dNmax; N = ((N*140) / 100) + 10) {
     unsigned int twoN = N << 1;
@@ -35,8 +74,8 @@ int main(int argc, char** argv) {
     unsigned long deltime;
     unsigned int cumcount = 0;
 
-    USTuint ustuint;
-    USTDiag ust_diag(N*N);
+    USTuint ustuint(N*10);
+    USTDiag ust_diag(N*N*2);
 
     for (unsigned int pass=0; pass<4; ++pass) {
 
@@ -50,15 +89,23 @@ int main(int argc, char** argv) {
       unsigned int yo;
       unsigned int tmpx;
       unsigned int tmpy;
+      unsigned int collisions = 0;
       ustuint.clear();
       while(pxy<pxysend) {
         tmpx = distrib(generator);
         tmpy = distrib(generator);
         pair<USTuintIT,bool> insert_result = ustuint.insert(tmpx | (tmpy<<16));
-        if (!insert_result.second) continue;
+        if (!insert_result.second) {
+          ++collisions;
+          continue;
+        }
         *(pxy++) = tmpx;
         *(pxy++) = tmpy;
       }
+
+      unsigned int ustuint_size = ustuint.size();
+      unsigned int buckets = ustuint.bucket_count();
+      ustuint.clear();
 
       unsigned int dx;
       unsigned int dy;
@@ -87,10 +134,12 @@ int main(int argc, char** argv) {
 
       cout << pass
            << "," << N
-           << "," << ustuint.size()
+           << "," << ustuint_size
+           << "," << collisions
+           << "," << buckets
            << "," << count
            << "," << deltime
-           << "=pass,N,ustuint.size(),count,deltime\n";
+           << "=pass,N,ustuint_size,collisions,buckets,count,deltime\n";
       cout.flush();
 
     } // for (unsigned int pass=0; pass<5; ++pass)
