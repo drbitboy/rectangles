@@ -33,6 +33,7 @@ TL;DR:  the performance seems to be somewhere between O(N\*\*2) and O(N\*\*2 log
 
 ## Caveats
 - The entire approach was taken from several comments on the original youtube video; it is not at all original.
+- There has been no attempt made to validate the algorithm, but duck debuggin and eyeballing the results suggest it may be correct.
 - The focus here was on a minimal implementation that provides some idea of the performance of the diagonal algorithm.
 - The code uses random numbers to generate test cases; in an actual application the algorithm would be placed in a separate subroutine
 - The key design of the unordered map and set limits the XY coordinates to about 15 bits (0-32k), and even before that, performance drops off because of paging (on my system, at least) for XY coordinates beyond around 12k.
