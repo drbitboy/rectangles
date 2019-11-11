@@ -6,7 +6,7 @@ https://www.youtube.com/watch?v=EuPSibuIKIg
 TL;DR:  the performance seems to be somewhere between O(N**2) and O(N**2 logN)
 
 
-        N   T(Time),us       T/N**2  T/N**2/logN       T/N**3  T/n**2/logN
+        N   T(Time),us       T/N**2  T/N**2/logN       T/N**3  T/N**3/logN
      ----   ----------   ----------  -----------   ----------  -----------
        14,          83,  4.2347e-01,  1.1122e-01,  3.0248e-02,  7.9446e-03
        29,         362,  4.3044e-01,  8.8605e-02,  1.4843e-02,  3.0553e-03
