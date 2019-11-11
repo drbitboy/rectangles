@@ -35,6 +35,8 @@ TL;DR:  the performance seems to be somewhere between O(N\*\*2) and O(N\*\*2 log
 - The focus here was on a minimal implementation that provides some idea of the performance of the diagonal algorithm.
 - The code uses random numbers to generate test cases; in an actual application the algorithm would be placed in a separate subroutine
 - The key design of the unordered map and set limits the XY coordinates to about 15 bits (0-32k), and even before that, performance drops off because of paging (on my system, at least) for XY coordinates beyond around 12k.
+- The times are for my system (Win10/Cygwin), my CPU, my memory etc.  I tweaked a few parameters of the test space to try to ensure that no paging occured; before that I had several runs that were very slow and had noticeable disk useage (order 10^8 MB/s, as monitored by Task Manager), especially cases with large N values; I assumed that disk usage was due to paging.
+
 
 ## Manifest
 
