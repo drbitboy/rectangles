@@ -6,7 +6,7 @@ all: $(EXES)
 
 go: $(EXES:%=log_%.txt)
 
-r%: rbase.cpp
+r%: baser.cpp
 	$(LINK.cpp) -D__$(@)__ $(CXXFLAGS) -o $@ $<
 	
 
@@ -14,4 +14,4 @@ log_%.txt: %
 	./$< | tee $@
 
 clean:
-	$(RM) $(EXES) $(EXES:%=%.exe) log_r?.txt
+	$(RM) $(EXES) $(EXES:%=%.exe)
