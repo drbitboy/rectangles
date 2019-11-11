@@ -3,7 +3,7 @@ Measuring performance of a diagonals-based approach to solving simple coding exa
 
 https://www.youtube.com/watch?v=EuPSibuIKIg
 
-TL;DR:  the performance seems to be somewhere between O(N**2) and O(N**2 logN)
+TL;DR:  the performance seems to be somewhere between O(N\*\*2) and O(N\*\*2 logN)
 
 
         N   T(Time),us       T/N**2  T/N**2/logN       T/N**3  T/n**2/logN
