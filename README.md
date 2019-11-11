@@ -1,7 +1,40 @@
 # rectangles
-Diagonals approach to solving simple coding example from mock Google interview on YouTube
+Measuring performance of a diagonals-based approach to solving simple coding example from mock Google interview on YouTube
 
 https://www.youtube.com/watch?v=EuPSibuIKIg
+
+TL;DR:  the performance seems to be somewhere between O(N**2) and O(N**2 logN)
+
+
+        N   T(Time),us       T/N**2  T/N**2/logN       T/N**3  T/n**2/logN
+     ----   ----------   ----------  -----------   ----------  -----------
+       14,          83,  4.2347e-01,  1.1122e-01,  3.0248e-02,  7.9446e-03
+       29,         362,  4.3044e-01,  8.8605e-02,  1.4843e-02,  3.0553e-03
+       50,        1120,  4.4800e-01,  7.9378e-02,  8.9600e-03,  1.5876e-03
+       80,        2890,  4.5156e-01,  7.1428e-02,  5.6445e-03,  8.9285e-04
+      122,        6855,  4.6056e-01,  6.6452e-02,  3.7751e-03,  5.4469e-04
+      180,       15139,  4.6725e-01,  6.2368e-02,  2.5959e-03,  3.4649e-04
+      262,       32779,  4.7752e-01,  5.9442e-02,  1.8226e-03,  2.2688e-04
+      376,       73348,  5.1882e-01,  6.0648e-02,  1.3798e-03,  1.6130e-04
+      536,      164241,  5.7168e-01,  6.3057e-02,  1.0666e-03,  1.1764e-04
+      760,      354423,  6.1361e-01,  6.4119e-02,  8.0739e-04,  8.4368e-05
+     1074,      701721,  6.0835e-01,  6.0420e-02,  5.6644e-04,  5.6257e-05
+     1513,     1446951,  6.3209e-01,  5.9838e-02,  4.1777e-04,  3.9550e-05
+     2128,     2942976,  6.4990e-01,  5.8786e-02,  3.0540e-04,  2.7625e-05
+     2989,     5992711,  6.7077e-01,  5.8098e-02,  2.2441e-04,  1.9437e-05
+     4194,    11990833,  6.8170e-01,  5.6647e-02,  1.6254e-04,  1.3507e-05
+     5881,    23038153,  6.6611e-01,  5.3196e-02,  1.1326e-04,  9.0454e-06
+     8243,    46074197,  6.7809e-01,  5.2125e-02,  8.2262e-05,  6.3235e-06
+    11550,    97135707,  7.2814e-01,  5.3954e-02,  6.3042e-05,  4.6713e-06
+
+    N.B. The range of XY coordinates was N/2, and there were 10-30 rectangles
+         identified per N over all N.
+
+
+## Caveats
+- The focus here was on a minimal implementation that provides some idea of the performance of the diagonal algorithm.
+- The code uses random numbers to generate test cases; in an actual application the algorithm would be placed in a separate subroutine
+- The key design of the unordered map and set limits the XY coordinates to about 15 bits (0-32k), and even before that, performance drops off because of paging (on my system, at least) for XY coordinates beyond around 12k.
 
 ## Manifest
 
@@ -9,6 +42,7 @@ https://www.youtube.com/watch?v=EuPSibuIKIg
 Controls building and running
 - make [all] (default):  build r3 and r0 executables (r3.exe and r0.exe on Cygwin)
 - make go:  run r3 and r0 executables; write outputs to log_r3.txt and log_r0.txt respectively.
+- make log_results:  calculates ratios of time to N**2, N**2*logN, etc.
 - make clean:  remove executables and log files
 
 ### baser.cpp
